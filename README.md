@@ -8,7 +8,7 @@ Ce dépôt couvre la première étape du projet : la **boucle de courant avec d�
 
 ```
 .
-├── params_pmsm.m               Paramètres du moteur et gains des régulateurs
+├── params.m               Paramètres du moteur et gains des régulateurs
 ├── models/
 │   ├── etapeA_RL.slx           Circuit RL de l'axe q, rotor bloqué
 │   └── foc_boucle_courant.slx  Moteur dq complet + régulateurs + découplage
