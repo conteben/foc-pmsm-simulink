@@ -11,7 +11,7 @@ Ce dépôt couvre la première étape du projet : la **boucle de courant avec d�
 ├── params.m               Paramètres du moteur et gains des régulateurs
 ├── models/
 │   ├── etapeA_RL.slx           Circuit RL de l'axe q, rotor bloqué
-│   └── foc_boucle_courant.slx  Moteur dq complet + régulateurs + découplage
+│   └── commande_vectorielle_FOC.slx  Moteur dq complet + régulateurs + découplage
 ├── figures/                    Courbes de validation
 └── docs/
     ├── rapport_foc_pmsm.tex    Rapport détaillé (source LaTeX)
