@@ -25,6 +25,7 @@ Le modèle est construit en quatre étapes, avec un essai de validation à chacu
 | B | Régulateur PI de courant | Boucle fermée du premier ordre, τ = 1/ωc |
 | C | Mécanique, f.é.m. et feedforward | Erreur de traînage sans feedforward, limite de tension |
 | D | Axe d, termes croisés et découplage | id maintenu à zéro pendant l'accélération |
+| E | Boucle de vitesse en cascade, anti-windup | Dépassement, temps de pic, rejet d'un couple de charge |
 
 ## Modèle et réglage
 
