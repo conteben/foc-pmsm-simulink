@@ -85,7 +85,7 @@ Le PI seul finit par rejeter le couplage entre axes, mais avec une erreur pendan
  
 | Vitesse | Courant |
 |---|---|
-| ![Vitesse, petit échelon](figures/wm_petit_echelon.png) | ![Courant, petit échelon](figures/iq_petit_echelon.png) |
+| ![Vitesse, petit échelon](figures/wm_creux.png) | ![Courant, petit échelon](figures/iq_petit_echelon.png) |
  
 Avec ζ = 1, la réponse indicielle atteint son maximum à t = 2/ωn = 10 ms, avec un dépassement de e⁻² ≈ 13,5 %. Ce dépassement vient du zéro du PI, pas d'un manque d'amortissement. Face à un échelon de charge, le creux vaut (TL/J)·e⁻¹/ωn ≈ 9,2 rad/s, atteint à t = 1/ωn = 5 ms. Les petits écarts restants viennent de la dynamique de la boucle de courant, que le calcul néglige.
  
