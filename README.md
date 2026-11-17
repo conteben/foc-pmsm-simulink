@@ -57,6 +57,10 @@ La tension est limitée à Vdc/√3 (zone linéaire SVPWM), avec anti-windup sur
 | C : iq final à vide | 0,06 A | environ 0,06 A |
 | D : id sans découplage, pendant l'accélération | +0,03 A | environ +0,03 A |
 | D : id avec découplage | 0 A | 0 A |
+| E : sommet de vitesse, échelon de 20 rad/s | 22,71 rad/s (13,5 %) | 22,75 rad/s (13,8 %) |
+| E : temps de pic | 10 ms | 10 ms |
+| E : creux sous un couple de 0,05 N·m | 10,80 rad/s, 5 ms après | 10,85 rad/s, environ 5,5 ms après |
+| E : iq en régime chargé | 0,837 A | 0,84 A |
 
 ### Étape B : réponse de la boucle de courant
 
