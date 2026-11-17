@@ -46,8 +46,14 @@ vq* = PI(iq* − iq) + ωe·(Ld·id + ψf)
 ```
 
 Réglage par compensation pôle-zéro : `Kp = L·ωc`, `Ki = Rs·ωc`. La boucle fermée devient un premier ordre de bande passante ωc. Avec fc = 1 kHz pour un découpage à 20 kHz, le retard de 1,5·Ts coûte environ 27° de marge de phase (63° restants).
-
+ 
 La tension est limitée à Vdc/√3 (zone linéaire SVPWM), avec anti-windup sur les PI et saturation en aval du découplage.
+ 
+La boucle de vitesse est un PI extérieur dont la sortie est la consigne iq*, limitée à ±2 A. La boucle de courant, plus rapide, est vue comme un gain unitaire, et le procédé se réduit à `ωm / iq = Kt / (J·s)`. Le PI est réglé par placement de pôles en second ordre :
+ 
+```
+Kpw = 2·ζ·ωn·J / Kt      Kiw = ωn²·J / Kt
+```
 
 ## Résultats
 
