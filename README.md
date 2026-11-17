@@ -10,7 +10,6 @@ Ce dépôt couvre la première étape du projet : la **boucle de courant avec d�
 .
 ├── params.m               Paramètres du moteur et gains des régulateurs
 ├── models/
-│   ├── etapeA_RL.slx           Circuit RL de l'axe q, rotor bloqué
 │   └── commande_vectorielle_FOC.slx  Moteur dq complet + régulateurs + découplage
 ├── figures/                    Courbes de validation
 ```
@@ -120,7 +119,7 @@ Sans anti-windup, l'intégrateur continue d'accumuler l'erreur pendant la satura
 5. La consigne de vitesse et le couple de charge se règlent dans les deux blocs Step `wm*` et `TL`.
 Réglages du solveur : pas variable `ode45`, pas maximal `1e-5` s, tolérance relative `1e-4`.
  
-Version utilisée : MATLAB/Simulink R20XX (à préciser).
+Version utilisée : MATLAB/Simulink de préférence à partir de la version R2025 .
  
 ## Limites actuelles
  
