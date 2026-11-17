@@ -78,33 +78,53 @@ Sans feedforward, le PI court après une f.é.m. qui croît en rampe (480 V/s) e
 
 Le PI seul finit par rejeter le couplage entre axes, mais avec une erreur pendant les transitoires de vitesse. Le découplage la supprime sans attendre l'action intégrale.
 
+
+### Étape E : boucle de vitesse
+ 
+Échelon de consigne de 20 rad/s à 0,01 s, puis couple de charge de 0,05 N·m à 0,1 s :
+ 
+| Vitesse | Courant |
+|---|---|
+| ![Vitesse, petit échelon](figures/wm_petit_echelon.png) | ![Courant, petit échelon](figures/iq_petit_echelon.png) |
+ 
+Avec ζ = 1, la réponse indicielle atteint son maximum à t = 2/ωn = 10 ms, avec un dépassement de e⁻² ≈ 13,5 %. Ce dépassement vient du zéro du PI, pas d'un manque d'amortissement. Face à un échelon de charge, le creux vaut (TL/J)·e⁻¹/ωn ≈ 9,2 rad/s, atteint à t = 1/ωn = 5 ms. Les petits écarts restants viennent de la dynamique de la boucle de courant, que le calcul néglige.
+ 
+### Étape E : effet de l'anti-windup
+ 
+Échelon de consigne de 200 rad/s : la consigne de courant sature à 2 A et la vitesse monte en rampe à 12 000 rad/s².
+ 
+| Avec anti-windup (clamping) | Sans anti-windup |
+|---|---|
+| ![Vitesse avec anti-windup](figures/wm_avec_clamping.png) | ![Vitesse sans anti-windup](figures/wm_sans_clamping.png) |
+| ![Courant avec anti-windup](figures/iq_avec_clamping.png) | ![Courant sans anti-windup](figures/iq_sans_clamping.png) |
+ 
+Sans anti-windup, l'intégrateur continue d'accumuler l'erreur pendant la saturation. La consigne de courant reste saturée bien après le passage à 200 rad/s, la vitesse monte vers 310 rad/s (environ 55 % de dépassement), et le régulateur doit freiner à −1,3 A pour vider l'intégrateur. Avec le clamping, l'intégrateur est gelé pendant la saturation et le dépassement tombe à environ 2 %.
+ 
 ## Lancer la simulation
-
+ 
 1. Ouvrir MATLAB dans le dossier du dépôt.
-2. Exécuter `params_pmsm.m`.
-3. Ouvrir `models/foc_boucle_courant.slx` et lancer la simulation (durée 0,1 s).
+2. Exécuter `params.m`.
+3. Ouvrir `models/commande_vectorielle_FOC.slx` et lancer la simulation (durée 0,2 s).
 4. Les deux interrupteurs manuels activent ou coupent le feedforward de l'axe q et le découplage de l'axe d.
-
+5. La consigne de vitesse et le couple de charge se règlent dans les deux blocs Step `wm*` et `TL`.
 Réglages du solveur : pas variable `ode45`, pas maximal `1e-5` s, tolérance relative `1e-4`.
-
+ 
 Version utilisée : MATLAB/Simulink R20XX (à préciser).
-
+ 
 ## Limites actuelles
-
+ 
 - Régulateur continu, sans retard de calcul ni de PWM.
 - Onduleur idéal, saturation par axe et non sur le module de la tension.
 - Mesures parfaites, paramètres du moteur supposés connus.
 - Moteur à pôles lisses (Ld = Lq), sans couple de réluctance.
-
 ## Suite prévue
-
-- [ ] Boucle de vitesse (PI extérieur, sortie iq*)
+ 
+- [x] Boucle de vitesse (PI extérieur, sortie iq*)
 - [ ] Défluxage et limitation du module de la tension
 - [ ] Discrétisation du régulateur à 20 kHz
 - [ ] Modèle abc avec transformées de Clarke/Park, onduleur et SVPWM
 - [ ] Étude de robustesse aux erreurs de paramètres
 - [ ] Génération de code (Embedded Coder) et essais sur banc STM32
-
 ## Auteur
-
+ 
 Bangaly Conte
