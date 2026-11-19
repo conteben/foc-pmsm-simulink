@@ -1,23 +1,25 @@
 # Commande vectorielle (FOC) d'un PMSM sous Simulink
-
+ 
 Modélisation d'un moteur synchrone à aimants permanents dans le repère dq, réglage analytique des régulateurs de courant et validation en simulation. Chaque résultat est comparé à une valeur calculée à la main.
-
-Ce dépôt couvre la première étape du projet : la **boucle de courant avec découplage**. La boucle de vitesse, le défluxage et le portage sur STM32 suivront.
-
+ 
+Ce dépôt couvre la **boucle de courant avec découplage**, la **boucle de vitesse en cascade** et sa **synthèse robuste H∞ par LMI**. Le défluxage, la discrétisation et le portage sur STM32 suivront.
+ 
 ## Contenu
 
 ```
 .
 ├── params.m               Paramètres du moteur et gains des régulateurs
+├── hinf_vitesse.m              Synthèse H∞ par LMI (YALMIP) du correcteur de vitesse
+├── essais_robustesse.m         Comparaison PI / H∞ pour J = J0, 2·J0, 3·J0
 ├── models/
-│   └── commande_vectorielle_FOC.slx  Moteur dq complet + régulateurs + découplage
+│   └── commande_vectorielle_FOC.slx            Moteur dq, boucles de courant et de vitesse, découplage
 ├── figures/                    Courbes de validation
 ```
-
+ 
 ## Démarche
-
-Le modèle est construit en quatre étapes, avec un essai de validation à chacune.
-
+ 
+Le modèle est construit en six étapes, avec un essai de validation à chacune.
+ 
 | Étape | Ajout | Vérification |
 |---|---|---|
 | A | Circuit RL de l'axe q, rotor bloqué | Constante de temps L/R = 2 ms |
@@ -25,7 +27,7 @@ Le modèle est construit en quatre étapes, avec un essai de validation à chacu
 | C | Mécanique, f.é.m. et feedforward | Erreur de traînage sans feedforward, limite de tension |
 | D | Axe d, termes croisés et découplage | id maintenu à zéro pendant l'accélération |
 | E | Boucle de vitesse en cascade, anti-windup | Dépassement, temps de pic, rejet d'un couple de charge |
-
+| F | Synthèse robuste H∞ par LMI de la boucle de vitesse | Amortissement et rejet de charge pour J de J0 à 3·J0 |
 ## Modèle et réglage
 
 Équations du moteur en convention moteur :
