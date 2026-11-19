@@ -119,6 +119,8 @@ Le PI de vitesse est réglé sur l'inertie nominale J0. Pour une inertie inconnu
 - **État augmenté :** x = [e ; ∫e], avec e = ωm − ωm\*. Le retour d'état iq\* = K·x a la structure d'un PI : les gains se mettent dans le même bloc PID, avec le même anti-windup.
 - **Contraintes, aux deux sommets J0 et 3·J0 avec une même matrice de Lyapunov :** lemme borné réel (norme H∞ du transfert couple de charge vers sorties pondérées inférieure à γ), pôles entre −100 et −1 000 rad/s, amortissement au moins égal à 0,707.
 - **Résultat :** Kpw = 0,188, Kiw = 27,7, γ garanti = 7,1 ; norme H∞ réelle de 4,6 à 4,8 sur l'intervalle.
+
+
 | J/J0 | Amortissement minimal, PI | Amortissement minimal, H∞ |
 |---|---|---|
 | 1 | 1,00 | 1,00 |
