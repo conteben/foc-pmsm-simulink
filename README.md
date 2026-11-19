@@ -110,6 +110,36 @@ Avec ζ = 1, la réponse indicielle atteint son maximum à t = 2/ωn = 10 ms, av
  
 Sans anti-windup, l'intégrateur continue d'accumuler l'erreur pendant la saturation. La consigne de courant reste saturée bien après le passage à 200 rad/s, la vitesse monte vers 310 rad/s (environ 55 % de dépassement), et le régulateur doit freiner à −1,3 A pour vider l'intégrateur. Avec le clamping, l'intégrateur est gelé pendant la saturation et le dépassement tombe à environ 2 %.
  
+### Étape F : synthèse robuste H∞ par LMI
+ 
+Le PI de vitesse est réglé sur l'inertie nominale J0. Pour une inertie inconnue entre J0 et 3·J0 (charge variable), le correcteur est resynthétisé par LMI avec YALMIP (`hinf_vitesse.m`).
+ 
+- **État augmenté :** x = [e ; ∫e], avec e = ωm − ωm\*. Le retour d'état iq\* = K·x a la structure d'un PI : les gains se mettent dans le même bloc PID, avec le même anti-windup.
+- **Contraintes, aux deux sommets J0 et 3·J0 avec une même matrice de Lyapunov :** lemme borné réel (norme H∞ du transfert couple de charge vers sorties pondérées inférieure à γ), pôles entre −100 et −1 000 rad/s, amortissement au moins égal à 0,707.
+- **Résultat :** Kpw = 0,188, Kiw = 27,7, γ garanti = 7,1 ; norme H∞ réelle de 4,6 à 4,8 sur l'intervalle.
+| J/J0 | Amortissement minimal, PI | Amortissement minimal, H∞ |
+|---|---|---|
+| 1 | 1,00 | 1,00 |
+| 2 | 0,71 | 0,98 |
+| 3 | 0,58 | 0,80 |
+ 
+Essais sous Simulink (`essais_robustesse.m`) : échelon de 10 rad/s, puis couple de charge de 0,05 N·m à 0,1 s.
+ 
+| Correcteur | J/J0 | Dépassement | Creux sous la charge |
+|---|---|---|---|
+| PI (ωn = 200) | 1 | 14,0 % | 9,39 rad/s |
+| PI (ωn = 200) | 2 | 21,3 % | 8,18 rad/s |
+| PI (ωn = 200) | 3 | 26,5 % | 7,42 rad/s |
+| H∞ par LMI | 1 | 9,3 % | 3,77 rad/s |
+| H∞ par LMI | 2 | 14,8 % | 3,34 rad/s |
+| H∞ par LMI | 3 | 18,9 % | 3,08 rad/s |
+ 
+| PI | H∞ par LMI |
+|---|---|
+| ![PI](figures/robustesse_pi.png) | ![H-infini](figures/robustesse_hinf.png) |
+ 
+Le creux sous la charge est divisé par environ 2,5 sur toute la plage, et la réponse reste amortie à 3·J0, alors que le PI oscille. Une partie de ce gain vient de gains plus élevés (Kpw environ 2,8 fois celui du PI) : le pic de courant au démarrage atteint 1,75 A, proche de la limite de 2 A, et le correcteur serait plus sensible au bruit de mesure de vitesse, non modélisé ici. L'apport propre de la synthèse LMI est la garantie d'amortissement et de rapidité sur tout l'intervalle d'inertie. Le γ garanti (7,1) est supérieur à la norme réelle (4,8) : c'est le conservatisme d'une matrice de Lyapunov commune.
+ 
 ## Lancer la simulation
  
 1. Ouvrir MATLAB dans le dossier du dépôt.
@@ -119,7 +149,7 @@ Sans anti-windup, l'intégrateur continue d'accumuler l'erreur pendant la satura
 5. La consigne de vitesse et le couple de charge se règlent dans les deux blocs Step `wm*` et `TL`.
 Réglages du solveur : pas variable `ode45`, pas maximal `1e-5` s, tolérance relative `1e-4`.
  
-Version utilisée : MATLAB/Simulink de préférence à partir de la version R2025 .
+Version utilisée : MATLAB/Simulink R20XX (à préciser).
  
 ## Limites actuelles
  
@@ -133,7 +163,8 @@ Version utilisée : MATLAB/Simulink de préférence à partir de la version R202
 - [ ] Défluxage et limitation du module de la tension
 - [ ] Discrétisation du régulateur à 20 kHz
 - [ ] Modèle abc avec transformées de Clarke/Park, onduleur et SVPWM
-- [ ] Étude de robustesse aux erreurs de paramètres
+- [x] Robustesse à l'inertie : synthèse H∞ par LMI
+- [ ] Robustesse aux autres paramètres (Rs, Ld, Lq, ψf)
 - [ ] Génération de code (Embedded Coder) et essais sur banc STM32
 ## Auteur
  
